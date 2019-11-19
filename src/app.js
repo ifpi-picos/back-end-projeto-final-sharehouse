@@ -4,7 +4,6 @@ const cors = require('cors');
 const helmet = require('helmet');
 const routes = require('./routes');
 const database = require('./config/database');
-const Config = require('./config/config');
 
 const app = express();
 
@@ -15,7 +14,7 @@ const configureExpress = () => {
   app.use(helmet.noSniff());
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  app.use(Config.API_BASE, routes);
+  app.use('/', routes);
   return app;
 };
 

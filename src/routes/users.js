@@ -49,7 +49,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await usersController.remove(req.params.id);
-    res.send(message.success.removeUser);
+    res.send(message.success.removeUser).status(204);
   } catch (err) {
     res.status(400).send(err);
   }

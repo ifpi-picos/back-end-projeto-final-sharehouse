@@ -7,10 +7,10 @@
     "lint": "eslint server.js src test",
     "lint:fix": "eslint server.js src test --fix",
     "debug": "node --nolazy --inspect-brk=9229 ./server.js",
-    "start": "node ./server.js",
+    "start": "nodemon ./server.js",
     "dev": "node ./server.js",
-    "test:integration": "NODE_ENV=test mocha  --exit --require @babel/register --require @babel/polyfill --require test/integration/helpers.js test/integration/**/*_spec.js",
-    "test:unit": "NODE_ENV=test mocha --require @babel/register --require @babel/polyfill --require test/unit/helpers.js test/unit/**/*_spec.js",
+    "test:integration": "NODE_ENV=test mocha  --exit --require test/integration/helpers.js test/integration/**/*_spec.js",
+    "test:unit": "NODE_ENV=test mocha --require test/unit/helpers.js test/unit/**/*_spec.js",
     "test": "npm run test:unit && npm run test:integration",
     "clean": "rm -rf dist",
     "compile": "npm run clean && babel . -d dist  --ignore ./node_modules --ignore ./test",
@@ -31,6 +31,8 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "helmet": "^3.21.1"
+    "helmet": "^3.21.1",
+    "mongoose": "^5.7.11",
+    "nodemon": "^1.19.4"
   }
 }
