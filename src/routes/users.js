@@ -28,6 +28,16 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.post('/authenticate', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await usersController.authenticate(email, password);
+    res.send(user);
+  } catch (err) {
+    throw new Error(err);
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     await usersController.create(req.body);

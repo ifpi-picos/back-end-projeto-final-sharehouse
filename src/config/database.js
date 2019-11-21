@@ -5,6 +5,7 @@ mongoose.Promise = Promise;
 async function connect() {
   await mongoose.connect(config.MONGODB_URL, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
 }
 module.exports = connect;
