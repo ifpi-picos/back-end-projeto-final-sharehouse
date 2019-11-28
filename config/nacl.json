@@ -13,8 +13,20 @@
     "group": "user",
     "permissions": [
       {
-        "resoucer": "*",
+        "resource": "*",
         "methods": "*",
+        "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "guest",
+    "permissions": [
+      {
+        "resource": "*",
+        "methods": [
+          "POST"
+        ],
         "action": "allow"
       }
     ]

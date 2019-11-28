@@ -4,10 +4,12 @@ const auth = require('../config/auth.json');
 
 module.exports = (req, res, next) => {
   const token = req.headers['x-access-token'];
-  console.log('token: ', token);
+
   jwt.verify(token, auth.key, (err, decoded) => {
+    if (err) {
+      return res.send(err);
+    }
     req.decoded = decoded;
-    console.log('decoded: ', decoded);
-    next(err);
+    return next();
   });
 };

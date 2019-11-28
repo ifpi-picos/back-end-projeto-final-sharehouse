@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const acl = require('express-acl');
 const routes = require('./routes');
 const database = require('./config/database');
-const jwt = require('./middleware/auth.js');
 
 const app = express();
 acl.config({ baseUrl: '/', path: 'config' });
@@ -17,8 +16,8 @@ const configureExpress = () => {
   app.use(helmet.noSniff());
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  // app.use(acl.authorize.unless({ path: ['/users/authenticate'] }));
-  app.use(jwt);
+  // app.use(jwt);
+  app.use(acl.authorize);
   app.use('/', routes);
 
   return app;

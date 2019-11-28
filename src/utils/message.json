@@ -7,6 +7,9 @@
     "createUser": "Usuário cadastrado com sucesso!",
     "editUser": "Usuário alterado com sucesso!",
     "removeUser": "Usuário removido com sucesso!",
-    "photosSend": "Imagem enviada com sucesso, aguarde a validação"
+    "photosSend": "Imagem enviada com sucesso, aguarde a validação",
+    "createHouse": "Casa cadastrada com sucesso!",
+    "editHouse": "Casa editada com sucesso!",
+    "removeHouse": "Casa excluída com suceesso!"
   }
 }

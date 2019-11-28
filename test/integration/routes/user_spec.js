@@ -1,7 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* global setupApp supertest expect */
 const User = require('../../../src/models/user');
-const Config = require('../../../src/config/config');
 const message = require('../../../src/utils/message.json');
 
 describe('Routes: users', () => {
