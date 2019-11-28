@@ -1,24 +1,42 @@
+/**
+ * Modules
+ */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
-const acl = require('express-acl');
+
+/**
+ * Router
+ */
 const routes = require('./routes');
+
+/**
+ * Database Connection
+ */
 const database = require('./config/database');
 
+/**
+ * Middleware
+ */
+const authorize = require('./middleware/authorize');
+
+/**
+ * Initialize Express
+ */
 const app = express();
-acl.config({ baseUrl: '/', path: 'config' });
 
 const configureExpress = () => {
   app.use(cors());
+
   app.use(helmet());
-  app.use(helmet.xssFilter());
-  app.use(helmet.noSniff());
+  app.use(helmet.xssFilter()); // kill hackers
+  app.use(helmet.noSniff()); // idk
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  // app.use(jwt);
-  app.use(acl.authorize);
-  app.use('/', routes);
+  app.use(authorize); // Verify token
+
+  app.use('/', routes); // Set routers [path: /]
 
   return app;
 };

@@ -7,7 +7,9 @@ const router = express.Router();
 
 const usersController = new UsersController(User);
 
-router.get('/', async (req, res) => {
+const permit = require('../middleware/permission');
+
+router.get('/', permit('user', 'admin'), async (req, res) => {
   try {
     const users = await usersController.get();
     res.send(users);
@@ -32,7 +34,16 @@ router.post('/authenticate', async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await usersController.authenticate(email, password);
-    res.send(user);
+
+    if(user) {
+      res.send(user);
+    } else {
+      res
+        .status(401)
+        .json({
+          message: 'O e-mail ou senha estão incorretos.'
+        });
+    }
   } catch (err) {
     throw new Error(err);
   }
