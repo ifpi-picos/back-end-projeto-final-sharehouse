@@ -1,42 +1,55 @@
 const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
-  endereco: {
-    estado: {
+  address: {
+    state: {
       type: String,
       required: true,
     },
-    cidade: {
+    city: {
       type: String,
       required: true,
     },
-    bairro: {
+    district: {
       type: String,
       required: true,
     },
-    rua: {
+    street: {
       type: String,
       required: true,
     },
-    complemento: {
-      type: String,
-      required: true,
+    reference: {
+      type: String
     },
-    numero: {
+    number: {
       type: Number,
       required: true,
     },
   },
-  valor: {
+  details: {
+    beds: Number,
+    baths: Number,
+  },
+  price: {
     type: Number,
     required: true,
   },
-  tipoDeCasa: {
-    type: Number,
+  type: {
+    house: Boolean,
+    apartment: Boolean,
   },
-
+  amenities: {
+    balcony: Boolean,
+    pool: Boolean,
+    beach: Boolean,
+    parking: Boolean,
+    air_conditioning: Boolean,
+    college: Boolean,
+  },
+  coordinates: {
+    type: [Number], // { latitude, longitude }
+    required: true
+  }
 });
 
-const house = mongoose.model('House', schema);
-
-module.exports = house;
+module.exports = mongoose.model('House', schema);
