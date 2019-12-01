@@ -32,7 +32,10 @@
     "body-parser": "^1.19.0",
     "config": "^3.2.4",
     "cors": "^2.8.5",
+    "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-group-routes": "^1.1.0",
     "helmet": "^3.21.1",
     "jsonwebtoken": "^8.3.0",
     "module-alias": "^2.2.2",
@@ -40,10 +43,12 @@
     "nodemon": "^1.19.4"
   },
   "_moduleAliases": {
+    "@config": "src/config",
     "@controller": "src/controllers",
-    "@middleware": "src/middleware",
+    "@middleware": "src/middlewares",
     "@model": "src/models",
     "@router": "src/routes",
-    "@utils": "src/utils"
+    "@util": "src/utils",
+    "@view": "src/views"
   }
 }

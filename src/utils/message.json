@@ -10,6 +10,15 @@
     "photosSend": "Imagem enviada com sucesso, aguarde a validação",
     "createHouse": "Casa cadastrada com sucesso!",
     "editHouse": "Casa editada com sucesso!",
-    "removeHouse": "Casa excluída com suceesso!"
+    "removeHouse": "Casa excluída com suceesso!",
+
+    "created": ":name criado com sucesso.",
+    "removed": ":name foi removido.",
+    "edited": ":name foi editado."
+  },
+
+  "validation": {
+    "max": "O campo :field tem um limite de :length caracteres.",
+    "min": "O campo :field tem um limite de :length caracteres."
   }
 }

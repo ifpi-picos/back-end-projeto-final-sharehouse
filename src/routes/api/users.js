@@ -1,13 +1,13 @@
 const express = require('express');
-const UsersController = require('../controllers/users');
-const User = require('../models/user');
-const message = require('../utils/message.json');
+const UsersController = require('@controller/users');
+const User = require('@model/user');
+const message = require('@util/message.json');
 
 const router = express.Router();
 
 const usersController = new UsersController(User);
 
-const permit = require('../middleware/permission');
+const permit = require('@middleware/permission');
 
 router.get('/', permit('user', 'admin'), async (req, res) => {
   try {

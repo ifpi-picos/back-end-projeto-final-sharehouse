@@ -1,44 +1,50 @@
 /**
  * Modules
  */
-const express = require('express');
+const path       = require('path');
+const express    = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet');
+const cors       = require('cors');
+const helmet     = require('helmet');
+const app        = express();
+/**
+ * MongoDB
+ */
+require('./config/database');
 
 /**
  * Router
  */
-const routes = require('./routes');
-
-/**
- * Database Connection
- */
-const database = require('./config/database');
+const router = {
+  api: require('@router/api'),
+  web: require('@router/web'),
+}
 
 /**
  * Middleware
  */
-const authorize = require('./middleware/authorize');
+const authorize = require('@middleware/authorize');
 
 /**
- * Initialize Express
+ * app
  */
-const app = express();
+app.use(cors());
+app.use(helmet());
+app.use(helmet.xssFilter()); // kill hackers
+app.use(helmet.noSniff()); // idk
+app.disable('x-powered-by');
+app.use(bodyParser.json());
+app.use(authorize); // Verify token
+app.set('views', __dirname + '/views');
+// app.set('layout', __dirname + '/views/layouts/normal');
+app.set('view engine', 'ejs');
+/**
+ * Public Assets
+ */
+app.use(express.static('public'));
 
-const configureExpress = () => {
-  app.use(cors());
+// Group
+app.use('/', router.web);
+app.use('/api', router.api);
 
-  app.use(helmet());
-  app.use(helmet.xssFilter()); // kill hackers
-  app.use(helmet.noSniff()); // idk
-  app.disable('x-powered-by');
-  app.use(bodyParser.json());
-  app.use(authorize); // Verify token
-
-  app.use('/', routes); // Set routers [path: /]
-
-  return app;
-};
-
-module.exports = () => database().then(configureExpress);
+module.exports = app;

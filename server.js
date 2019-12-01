@@ -1,9 +1,9 @@
-const Config = require('./src/config/config');
-const setupApp = require('./src/app');
+require('module-alias/register')
 
-setupApp()
-  .then((app) => app.listen(process.env.port || Config.PORT, () => console.info(`app running on port ${Config.PORT}`)))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+const config  = require('@config/config');
+const app = require('./src/app');
+
+/**
+ * Server listener
+ */
+app.listen(process.env.port || config.PORT, () => console.info(`app running on port ${config.PORT}`));
