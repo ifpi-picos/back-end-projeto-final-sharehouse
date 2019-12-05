@@ -4,26 +4,21 @@ const schema = mongoose.Schema({
   address: {
     state: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     district: {
       type: String,
-      required: true,
     },
     street: {
       type: String,
-      required: true,
     },
     reference: {
-      type: String
+      type: String,
     },
     number: {
       type: Number,
-      required: true,
     },
   },
   details: {
@@ -32,7 +27,6 @@ const schema = mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
   },
   type: {
     house: Boolean,
@@ -48,8 +42,8 @@ const schema = mongoose.Schema({
   },
   coordinates: {
     type: [Number], // { latitude, longitude }
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('House', schema);

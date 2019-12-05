@@ -3,12 +3,11 @@ const config = require('./config');
 
 mongoose.Promise = Promise;
 
-async function connect() {
-  await mongoose.connect(config.MONGODB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    connectTimeoutMS: 3000
-  });
-}
+const configuracoes = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 3000,
+  useFindAndModify: false,
+};
 
-module.exports = connect;
+exports.connect = () => mongoose.connect(config.MONGODB_URL, configuracoes);

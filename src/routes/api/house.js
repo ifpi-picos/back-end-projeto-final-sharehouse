@@ -1,7 +1,7 @@
 const express = require('express');
-const modelHouse = require('@model/house');
-const ControllerHouse = require('@controller/house');
-const message = require('@util/message.json');
+const modelHouse = require('../../models/house');
+const ControllerHouse = require('../../controllers/house');
+const message = require('../../utils/message.json');
 
 const controllersHouse = new ControllerHouse(modelHouse);
 const router = express.Router();

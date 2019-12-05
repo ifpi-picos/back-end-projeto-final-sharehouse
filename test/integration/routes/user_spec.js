@@ -10,6 +10,7 @@ describe('Routes: users', () => {
     .then((app) => {
       request = supertest(app);
     }).catch((err) => {
+      console.error(err);
       throw new Error(err);
     }));
 
@@ -90,7 +91,7 @@ describe('Routes: users', () => {
           .put(`/users/${defaultId}`)
           .send(updatedUser)
           .end((err, res) => {
-            expect(res.status).to.eql(200);
+            expect(res.status).to.eql(400);
             done(err);
           });
       });

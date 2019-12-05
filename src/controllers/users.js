@@ -36,7 +36,7 @@ class UsersController {
 
   async update(id, userDTO) {
     try {
-      const users = await this.User.findById({ _id: id });
+      const users = await this.User.find({ _id: id });
       users.name = userDTO.name;
       users.email = userDTO.email;
       users.role = userDTO.role;
@@ -51,7 +51,7 @@ class UsersController {
 
   async remove(id) {
     try {
-      return this.User.remove({ _id: id });
+      return this.User.deleteOne({ _id: id });
     } catch (err) {
       throw new Error(err);
     }

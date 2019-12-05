@@ -106,12 +106,14 @@ describe('Controller: Users', () => {
         role: 'user',
       };
       class fakeUser {
-        static findOneAndUpdate() {}
+        static find() {}
+
+        save() {}
       }
       // eslint-disable-next-line new-cap
       const fakeUsersInstance = new fakeUser();
-      const findOneAndUpdateStub = sinon.stub(fakeUser, 'findOneAndUpdate');
-      findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).resolves(fakeUsersInstance);
+      const findOneAndUpdateStub = sinon.stub(fakeUser, 'find');
+      findOneAndUpdateStub.withArgs({ _id: fakeId }).resolves(fakeUsersInstance);
       const usersController = new UsersController(fakeUser);
       return usersController.update(fakeId, updatedUser).then((result) => {
         expect(result).to.eql(undefined);
@@ -127,10 +129,10 @@ describe('Controller: Users', () => {
           email: 'Updated email',
         };
         class fakeUser {
-          static findOneAndUpdate() {}
+          static find() {}
         }
-        const findOneAndUpdateStub = sinon.stub(fakeUser, 'findOneAndUpdate');
-        findOneAndUpdateStub.withArgs({ _id: fakeId }, updatedUser).rejects('Error400');
+        const findOneAndUpdateStub = sinon.stub(fakeUser, 'find');
+        findOneAndUpdateStub.withArgs({ _id: fakeId }).rejects('Error400');
         const usersController = new UsersController(fakeUser);
         return usersController
           .update(fakeId, updatedUser)
@@ -146,10 +148,10 @@ describe('Controller: Users', () => {
     it('should respond with 200 when the User has been deleted', () => {
       const fakeId = 'a-fake-id';
       class fakeUser {
-        static remove() {}
+        static deleteOne() {}
       }
 
-      const removeStub = sinon.stub(fakeUser, 'remove');
+      const removeStub = sinon.stub(fakeUser, 'deleteOne');
       removeStub.withArgs({ _id: fakeId }).resolves([1]);
       const usersController = new UsersController(fakeUser);
       return usersController
@@ -164,9 +166,9 @@ describe('Controller: Users', () => {
       it('should return 400', () => {
         const fakeId = 'a-fake-id';
         class fakeUser {
-          static remove() {}
+          static deleteOne() {}
         }
-        const removeStub = sinon.stub(fakeUser, 'remove');
+        const removeStub = sinon.stub(fakeUser, 'deleteOne');
         removeStub.withArgs({ _id: fakeId }).rejects({ message: 'Error400' });
         const usersController = new UsersController(fakeUser);
         return usersController

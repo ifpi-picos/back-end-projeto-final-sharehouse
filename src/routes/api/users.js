@@ -1,15 +1,15 @@
 const express = require('express');
-const UsersController = require('@controller/users');
-const User = require('@model/user');
-const message = require('@util/message.json');
+const UsersController = require('../../controllers/users');
+const User = require('../../models/user');
+const message = require('../../utils/message.json');
 
 const router = express.Router();
 
 const usersController = new UsersController(User);
 
-const permit = require('@middleware/permission');
+const permit = require('../../middlewares/permission');
 
-router.get('/', permit('user', 'admin'), async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const users = await usersController.get();
     res.send(users);
@@ -35,13 +35,13 @@ router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body;
     const user = await usersController.authenticate(email, password);
 
-    if(user) {
+    if (user) {
       res.send(user);
     } else {
       res
         .status(401)
         .json({
-          message: 'O e-mail ou senha estão incorretos.'
+          message: 'O e-mail ou senha estão incorretos.',
         });
     }
   } catch (err) {

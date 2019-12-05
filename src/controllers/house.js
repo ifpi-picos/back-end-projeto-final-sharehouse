@@ -30,7 +30,7 @@ class ControllerHouse {
 
   async update(id, houseTDO) {
     try {
-      await this.House.findByIdAndUpdate({ _id: id }, houseTDO);
+      await this.House.findOneAndUpdate({ _id: id }, houseTDO);
     } catch (err) {
       throw new Error(err);
     }
@@ -38,7 +38,7 @@ class ControllerHouse {
 
   async remove(id) {
     try {
-      await this.House.remove({ _id: id });
+      await this.House.deleteOne({ _id: id });
     } catch (err) {
       throw new Error(err);
     }
