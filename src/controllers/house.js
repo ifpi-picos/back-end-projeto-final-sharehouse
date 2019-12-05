@@ -38,7 +38,7 @@ class ControllerHouse {
 
   async remove(id) {
     try {
-      await this.House.deleteOne({ _id: id });
+      await this.House.remove({ _id: id });
     } catch (err) {
       throw new Error(err);
     }
