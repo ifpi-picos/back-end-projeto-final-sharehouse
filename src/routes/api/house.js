@@ -1,6 +1,7 @@
 const express = require('express');
-const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
+const fs = require('fs');
+const cloudinary = require('../../middlewares/cloudinary');
 const imagem = require('../../middlewares/multer');
 const modelHouse = require('../../models/house');
 const ControllerHouse = require('../../controllers/house');
@@ -27,27 +28,23 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/imagem', multer(imagem).single('file'), async (req, res) => {
-  const { path } = req.file;
-  const uniqueFilename = new Date().toISOString();
-  cloudinary.config({
-    cloud_name: 'dqssnq9lr',
-    api_key: '672883363642143',
-    api_secret: '6epXkMj7ImF5A_ayc__QxCWuEww',
-  });
-  cloudinary.uploader.upload(
-    path,
-    { public_id: `blog/${uniqueFilename}`, tags: 'blog' }, // directory and tags are optional
-    // eslint-disable-next-line consistent-return
-    (err, image) => {
-      if (err) return res.send(err);
-      // remove file from server
-      // eslint-disable-next-line global-require
-      const fs = require('fs');
-      fs.unlinkSync(path);
-      res.json(image);
-    },
-  );
+router.post('/imagem', multer(imagem).array('file', 4), async (req, res) => {
+  // eslint-disable-next-line no-return-await
+  const uploader = async (path) => await cloudinary.uploads(path, 'file');
+  const urls = [];
+  const { files } = req;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of files) {
+    const { path } = file;
+    // eslint-disable-next-line no-await-in-loop
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+  const dto = req.body;
+  dto.urlImagem = urls;
+  await controllersHouse.create(dto);
+  res.send(urls);
 });
 
 router.get('/:id', async (req, res) => {

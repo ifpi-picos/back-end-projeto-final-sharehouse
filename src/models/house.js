@@ -32,6 +32,7 @@ const schema = mongoose.Schema({
     house: Boolean,
     apartment: Boolean,
   },
+  urlImagem: [],
   amenities: {
     balcony: Boolean,
     pool: Boolean,

@@ -7,8 +7,6 @@ const router = express.Router();
 
 const usersController = new UsersController(User);
 
-const permit = require('../../middlewares/permission');
-
 router.get('/', async (req, res) => {
   try {
     const users = await usersController.get();
