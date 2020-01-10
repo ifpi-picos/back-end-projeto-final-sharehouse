@@ -9,5 +9,4 @@ const configuracoes = {
   connectTimeoutMS: 3000,
   useFindAndModify: false,
 };
-
 exports.connect = () => mongoose.connect(config.MONGODB_URL, configuracoes);
