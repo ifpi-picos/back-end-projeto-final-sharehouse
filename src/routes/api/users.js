@@ -36,7 +36,11 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/authenticate', async (req, res) => {
+router.post('/authenticate', userValidar.login(), async (req, res) => {
+  const erro = validationResult(req);
+  if (!erro.isEmpty()) {
+    res.status(422).send({ erro: erro.array() });
+  }
   try {
     const { email, password } = req.body;
     const user = await usersController.authenticate(email, password);
