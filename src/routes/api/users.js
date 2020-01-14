@@ -1,6 +1,14 @@
 const express = require('express');
+const multer = require('multer');
+const fs = require('fs');
+const { validationResult } = require('express-validator');
+const UserValidar = require('../../validation/user');
+
+const userValidar = new UserValidar();
 const UsersController = require('../../controllers/users');
 const User = require('../../models/user');
+const cloudinary = require('../../middlewares/cloudinary');
+const imagem = require('../../middlewares/multer');
 const message = require('../../utils/message.json');
 
 const router = express.Router();
@@ -47,12 +55,29 @@ router.post('/authenticate', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', userValidar.validar(), multer(imagem).array('file', 2), async (req, res) => {
+  const erro = validationResult(req);
+  if (!erro.isEmpty()) {
+    res.status(422).send({ erro: erro.array() });
+  }
+  // eslint-disable-next-line no-return-await
+  const uploader = async (path) => await cloudinary.uploads(path, 'file');
+  const urls = [];
+  const { files } = req;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of files) {
+    const { path } = file;
+    // eslint-disable-next-line no-await-in-loop
+    const newPath = await uploader(path);
+    urls.push(newPath);
+    fs.unlinkSync(path);
+  }
+  req.body.urlUser = urls;
   try {
     await usersController.create(req.body);
-    res.status(201).send(message.success.createUser);
+    res.send(message.success.createUser).status(200);
   } catch (err) {
-    res.status(400).send(err);
+    res.send(err).status(400);
   }
 });
 

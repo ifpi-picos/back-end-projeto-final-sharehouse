@@ -1,6 +1,10 @@
 const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
+const { validationResult } = require('express-validator');
+const HouseValidar = require('../../validation/house');
+
+const houseValidar = new HouseValidar();
 const cloudinary = require('../../middlewares/cloudinary');
 const imagem = require('../../middlewares/multer');
 const modelHouse = require('../../models/house');
@@ -10,7 +14,11 @@ const message = require('../../utils/message.json');
 const controllersHouse = new ControllerHouse(modelHouse);
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', houseValidar.validar(), async (req, res) => {
+  const erro = validationResult(req);
+  if (!erro.isEmpty()) {
+    res.status(422).send({ erro: erro.array() });
+  }
   try {
     await controllersHouse.create(req.body);
     res.send(message.success.createHouse).status(200);
@@ -28,7 +36,11 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/imagem', multer(imagem).array('file', 4), async (req, res) => {
+router.post('/imagem', houseValidar.validar(), multer(imagem).array('file', 4), async (req, res) => {
+  const erro = validationResult(req);
+  if (!erro.isEmpty()) {
+    res.status(422).send({ erro: erro.array() });
+  }
   // eslint-disable-next-line no-return-await
   const uploader = async (path) => await cloudinary.uploads(path, 'file');
   const urls = [];

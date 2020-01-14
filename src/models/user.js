@@ -7,11 +7,15 @@ const schema = mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  sexo: String,
+  address: String,
+  urlUser: [],
   role: String,
 });
 
 // eslint-disable-next-line consistent-return
 // eslint-disable-next-line func-names
+// eslint-disable-next-line consistent-return
 schema.pre('save', function (next) {
   if (!this.password || !this.isModified('password')) {
     return next();

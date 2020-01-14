@@ -21,7 +21,6 @@ class ControllerHouse {
 
   async create(houseDTO) {
     try {
-      console.log(houseDTO);
       const house = await new this.House(houseDTO);
       house.save();
     } catch (err) {

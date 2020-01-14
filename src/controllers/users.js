@@ -11,7 +11,9 @@ class UsersController {
 
   async get() {
     try {
-      return await this.User.find({}, { _id: '', name: '', email: '' });
+      return await this.User.find({}, {
+        _id: '', name: '', email: '', address: '', urlUser: '', sexo: '',
+      });
     } catch (err) {
       throw new Error(err);
     }
@@ -19,7 +21,9 @@ class UsersController {
 
   async getById(id) {
     try {
-      return await this.User.find({ _id: id }, { _id: '', name: '', email: '' });
+      return await this.User.find({ _id: id }, {
+        _id: '', name: '', email: '', address: '', urlUser: '', sexo: '',
+      });
     } catch (err) {
       throw new Error(err);
     }

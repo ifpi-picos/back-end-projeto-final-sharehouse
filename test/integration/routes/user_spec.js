@@ -20,11 +20,17 @@ describe('Routes: users', () => {
     name: 'Default User',
     email: 'email@email.com',
     password: '12345678',
+    sexo: 'masculino',
+    address: 'rua e numero, bairro',
+    urlUser: 'jkdafhapdnsofçaifknabjdfak',
   };
   const expectedUser = {
     _id: defaultId,
     name: 'Default User',
     email: 'email@email.com',
+    sexo: 'masculino',
+    address: 'rua e numero, bairro',
+    urlUser: 'jkdafhapdnsofçaifknabjdfak',
   };
 
   beforeEach(() => {

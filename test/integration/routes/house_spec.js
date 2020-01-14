@@ -41,6 +41,7 @@ describe('Routes: house', () => {
     coordinates: [-7.069470, -41.398026],
   };
   const expectHouse = {
+    urlImagem: [],
     address: {
       state: 'Maranhão',
       city: 'são Raimundo das Mangabeiras',
