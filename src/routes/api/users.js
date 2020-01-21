@@ -44,22 +44,14 @@ router.post('/authenticate', userValidar.login(), async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await usersController.authenticate(email, password);
-
-    if (user) {
-      res.send(user);
-    } else {
-      res
-        .status(401)
-        .json({
-          message: 'O e-mail ou senha estão incorretos.',
-        });
-    }
+    res.send(user).status(200);
   } catch (err) {
-    throw new Error(err);
+    console.log('erro:', err);
+    res.send(err).status(400);
   }
 });
 
-router.post('/', userValidar.validar(), multer(imagem).array('file', 2), async (req, res) => {
+router.post('/', multer(imagem).array('file', 2), async (req, res) => {
   const erro = validationResult(req);
   if (!erro.isEmpty()) {
     res.status(422).send({ erro: erro.array() });

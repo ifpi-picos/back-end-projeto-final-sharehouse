@@ -23,6 +23,7 @@ const authorize = require('./middlewares/authorize');
  */
 const configureExpress = () => {
   app.use(cors());
+  app.options('*', cors());
   app.use(helmet());
   app.use(helmet.xssFilter()); // kill hackers
   app.use(helmet.noSniff()); // idk
