@@ -18,12 +18,13 @@ router.post('/', houseValidar.validar(), async (req, res) => {
   const erro = validationResult(req);
   if (!erro.isEmpty()) {
     res.status(422).send({ erro: erro.array() });
-  }
-  try {
-    await controllersHouse.create(req.body);
-    res.send(message.success.createHouse).status(200);
-  } catch (err) {
-    res.send(err).status(401);
+  } else {
+    try {
+      await controllersHouse.create(req.body);
+      res.send(message.success.createHouse).status(200);
+    } catch (err) {
+      res.send(err).status(401);
+    }
   }
 });
 
@@ -37,10 +38,6 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/imagem', houseValidar.validar(), multer(imagem).array('file', 4), async (req, res) => {
-  const erro = validationResult(req);
-  if (!erro.isEmpty()) {
-    res.status(422).send({ erro: erro.array() });
-  }
   // eslint-disable-next-line no-return-await
   const uploader = async (path) => await cloudinary.uploads(path, 'file');
   const urls = [];
@@ -53,9 +50,6 @@ router.post('/imagem', houseValidar.validar(), multer(imagem).array('file', 4), 
     urls.push(newPath);
     fs.unlinkSync(path);
   }
-  const dto = req.body;
-  dto.urlImagem = urls;
-  await controllersHouse.create(dto);
   res.send(urls);
 });
 

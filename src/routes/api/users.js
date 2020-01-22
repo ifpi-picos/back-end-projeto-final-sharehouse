@@ -40,14 +40,14 @@ router.post('/authenticate', userValidar.login(), async (req, res) => {
   const erro = validationResult(req);
   if (!erro.isEmpty()) {
     res.status(422).send({ erro: erro.array() });
-  }
-  try {
-    const { email, password } = req.body;
-    const user = await usersController.authenticate(email, password);
-    res.send(user).status(200);
-  } catch (err) {
-    console.log('erro:', err);
-    res.send(err).status(400);
+  } else {
+    try {
+      const { email, password } = req.body;
+      const user = await usersController.authenticate(email, password);
+      res.send(user).status(200);
+    } catch (err) {
+      res.send(err).status(400);
+    }
   }
 });
 
