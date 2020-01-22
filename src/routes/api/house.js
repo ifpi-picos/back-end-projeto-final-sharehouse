@@ -37,19 +37,19 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/imagem', houseValidar.validar(), multer(imagem).array('file', 4), async (req, res) => {
+router.post('/imagem', multer(imagem).single('file'), async (req, res) => {
   // eslint-disable-next-line no-return-await
   const uploader = async (path) => await cloudinary.uploads(path, 'file');
   const urls = [];
-  const { files } = req;
+  const { file } = req;
   // eslint-disable-next-line no-restricted-syntax
-  for (const file of files) {
-    const { path } = file;
-    // eslint-disable-next-line no-await-in-loop
-    const newPath = await uploader(path);
-    urls.push(newPath);
-    fs.unlinkSync(path);
-  }
+  // for (const file of files) {
+  const { path } = file;
+  // eslint-disable-next-line no-await-in-loop
+  const newPath = await uploader(path);
+  urls.push(newPath);
+  fs.unlinkSync(path);
+  // }
   res.send(urls);
 });
 

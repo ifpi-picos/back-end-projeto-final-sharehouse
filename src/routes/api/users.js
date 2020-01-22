@@ -68,13 +68,7 @@ router.post('/', multer(imagem).array('file', 2), async (req, res) => {
     urls.push(newPath);
     fs.unlinkSync(path);
   }
-  req.body.urlUser = urls;
-  try {
-    await usersController.create(req.body);
-    res.send(message.success.createUser).status(200);
-  } catch (err) {
-    res.send(err).status(400);
-  }
+  res.send(urls);
 });
 
 router.put('/:id', async (req, res) => {
