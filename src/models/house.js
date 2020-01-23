@@ -30,8 +30,8 @@ const schema = mongoose.Schema({
     required: true,
   },
   type: {
-    house: Boolean,
-    apartment: Boolean,
+    type: String,
+    required: true
   },
   urlImagem: [],
   amenities: [],
