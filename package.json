@@ -11,7 +11,7 @@
     "dev": "node ./server.js",
     "clean": "rm -rf dist",
     "compile": "npm run clean && babel . -d dist  --ignore ./node_modules --ignore ./test",
-    "build": "npm run test && npm run compile"
+    "build": "npm run compile"
   },
   "author": "",
   "license": "ISC",
