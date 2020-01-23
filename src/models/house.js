@@ -41,10 +41,6 @@ const schema = mongoose.Schema({
     air_conditioning: Boolean,
     college: Boolean,
   },
-  coordinates: {
-    type: [Number], // { latitude, longitude }
-    required: true,
-  },
 });
 
 module.exports = mongoose.model('House', schema);
