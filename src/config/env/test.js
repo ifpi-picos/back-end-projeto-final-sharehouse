@@ -1,7 +1,7 @@
 class Config {
   constructor() {
     this.env = 'test';
-    this.PORT = 3000;
+    this.PORT = process.env.PORT || 3000;
     this.API_BASE = '/api';
     const DB_DB = process.env.DB_DB ? process.env.DB_DB : 'b915jnoavh0fjlh';
     const DB_USER = process.env.DB_USER ? process.env.DB_USER : 'ugp6drvosrrqrfebs2ey';

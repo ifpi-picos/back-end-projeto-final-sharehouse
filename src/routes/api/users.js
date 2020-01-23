@@ -89,12 +89,12 @@ router.post('/', multer(imagem).single('file'), async (req, res) => {
           email: body.email,
           password: body.password,
           sexo: body.sexo,
-          urlUser: [urlUser],
+          urlUser: urlUser.url,
           role: body.role,
         });
 
         res.json({
-          msg: message.success.createUser,
+          status: 'ok',
         }).status(200);
       } else {
         res.json({
@@ -103,20 +103,43 @@ router.post('/', multer(imagem).single('file'), async (req, res) => {
       }
     });
   } catch (error) {
-    console.error(error);
-
     res.json({
       msg: `Erro interno! ${error}`,
     }).status(500);
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', multer(imagem).single('file'), async (req, res) => {
+  // eslint-disable-next-line no-return-await
+  const uploader = async (path) => await cloudinary.uploads(path, 'file');
+
   try {
-    await usersController.update(req.params.id, req.body);
-    res.send(message.success.editUser);
-  } catch (err) {
-    res.status(400).send(err);
+    const { body } = req;
+
+    const user = await User.findOne({ _id: req.params.id }).populate('+password');
+
+    if (body.name) {
+      user.name = body.name;
+    }
+
+    if (body.password) {
+      user.password = body.password;
+    }
+
+    if (req.file) {
+      const urlUser = req.file ? await uploader(req.file.path) : null;
+      user.urlUser = urlUser.url;
+    }
+
+    user.save();
+
+    res.json({
+      status: 'ok',
+    }).status(200);
+  } catch (error) {
+    res.json({
+      msg: `Erro interno! ${error}`,
+    }).status(500);
   }
 });
 
