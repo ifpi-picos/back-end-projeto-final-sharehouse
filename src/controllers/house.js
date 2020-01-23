@@ -11,6 +11,9 @@ class ControllerHouse {
     }
   }
 
+  async filter(params) {
+  }
+
   async getByID(id) {
     try {
       return await this.House.find({ _id: id });

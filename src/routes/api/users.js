@@ -15,6 +15,10 @@ const router = express.Router();
 
 const usersController = new UsersController(User);
 
+const jwt = require('jsonwebtoken');
+
+const auth = require('../../config/auth.json');
+
 router.get('/', async (req, res) => {
   try {
     const users = await usersController.get();
@@ -23,6 +27,22 @@ router.get('/', async (req, res) => {
     res.status(400).send(err);
   }
 });
+
+router.get('/me', async (req, res) => {
+  try {
+    let token = req.headers.authorization.replace('Bearer ', '').trim();
+
+    jwt.verify(token, auth.key, function(err, decoded) {
+      if (err) {
+        res.json(err).status(401);
+      } else {
+        res.json(decoded);
+      }
+    });
+  } catch (error) {
+    res.json(error);
+  }
+})
 
 router.get('/:id', async (req, res) => {
   const {
@@ -51,24 +71,42 @@ router.post('/authenticate', userValidar.login(), async (req, res) => {
   }
 });
 
-router.post('/', multer(imagem).array('file', 2), async (req, res) => {
-  const erro = validationResult(req);
-  if (!erro.isEmpty()) {
-    res.status(422).send({ erro: erro.array() });
-  }
-  // eslint-disable-next-line no-return-await
+router.post('/', multer(imagem).single('file'), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, 'file');
-  const urls = [];
-  const { files } = req;
-  // eslint-disable-next-line no-restricted-syntax
-  for (const file of files) {
-    const { path } = file;
-    // eslint-disable-next-line no-await-in-loop
-    const newPath = await uploader(path);
-    urls.push(newPath);
-    fs.unlinkSync(path);
+
+  try {
+    let urlUser = await uploader(req.file.path);
+
+    const { body } = req;
+
+    /** Não permite usuários duplicados */
+    User.findOne({ email: body.email }).countDocuments((err, count) => {
+      if(count == 0) {
+        const user = usersController.create({
+          name: body.name,
+          email: body.email,
+          password: body.password,
+          sexo: body.sexo,
+          urlUser: [urlUser],
+          role: body.role
+        });
+  
+        res.json({
+          msg: message.success.createUser
+        }).status(200);
+      } else {
+        res.json({
+          msg: 'Já existe um usuário cadastrado com esse e-mail.'
+        }).status(401);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.json({
+      msg: 'Erro interno! ' + error
+    }).status(500);
   }
-  res.send(urls);
 });
 
 router.put('/:id', async (req, res) => {

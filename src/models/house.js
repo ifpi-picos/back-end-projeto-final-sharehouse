@@ -1,50 +1,40 @@
 const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
-  address: {
-    state: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    district: {
-      type: String,
-    },
-    street: {
-      type: String,
-    },
-    reference: {
-      type: String,
-    },
-    number: {
-      type: Number,
-    },
+  title: {
+    type: String,
+    required: true
   },
   details: {
-    beds: Number,
-    baths: Number,
+    type: String,
+    required: true
+  },
+  contact: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
+    required: true
+  },
+  beds: {
+    type: Number,
+    required: true
+  },
+  baths: {
+    type: Number,
+    required: true
   },
   price: {
     type: Number,
+    required: true
   },
   type: {
     house: Boolean,
-    apartment: Boolean,
+    apartment: Boolean
   },
   urlImagem: [],
-  amenities: {
-    balcony: Boolean,
-    pool: Boolean,
-    beach: Boolean,
-    parking: Boolean,
-    air_conditioning: Boolean,
-    college: Boolean,
-  },
-  coordinates: {
-    type: [Number], // { latitude, longitude }
-    required: true,
-  },
+  amenities: []
 });
 
 module.exports = mongoose.model('House', schema);
