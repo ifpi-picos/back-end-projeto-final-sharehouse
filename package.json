@@ -4,14 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "lint": "eslint server.js src test",
-    "lint:fix": "eslint server.js src test --fix",
-    "debug": "node --nolazy --inspect-brk=9229 ./server.js",
-    "start": "node ./server.js",
-    "dev": "node ./server.js",
-    "clean": "rm -rf dist",
-    "compile": "npm run clean && babel . -d dist  --ignore ./node_modules --ignore ./test",
-    "build": "npm run compile"
+    "start": "node ./server.js"
   },
   "author": "",
   "license": "ISC",
