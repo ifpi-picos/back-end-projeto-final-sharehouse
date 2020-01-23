@@ -113,34 +113,49 @@ router.delete('/:id', async (req, res) => {
 router.post('/filter', async (req, res) => {
   const { body } = req;
 
+  let query = [];
+
+  if(body.title) {
+    query.push({
+      title: new RegExp(body.title, 'i')
+    });
+  }
+
+  if(body.price) {
+    query.push({
+      price: {"$gt": 500, "$gte": body.price}
+    });
+  }
+
+  if(body.type) {
+    query.push({
+      type: body.type
+    });
+  }
+
+  if(body.beds) {
+    query.push({
+      beds: {"$gte": body.beds}
+    });
+  }
+
+  if(body.baths) {
+    query.push({
+      baths: {"$gte": body.baths}
+    });
+  }
+
+  if(body.amentities) {
+    query.push({
+      amentities: {"$in": [body.amentities]}
+    });
+  }
+
   const house = await modelHouse.find({
-    $and: [
-      {
-        $or: [
-          {
-            type: body.type,
-          }
-        ],
-        $or: [
-          {
-            price: {$gte: body.price},
-          }
-        ],
-        $or: [
-          {
-            beds: {$gte: body.beds},
-          }
-        ],
-        $or: [
-          {
-            amenities: {
-              "$in": [body.amenities]
-            }
-          }
-        ]
-      }
-    ]
-  })
+    $and: [{
+      ...query[0]
+    }]
+  });
   
   res.json(house);
 });
