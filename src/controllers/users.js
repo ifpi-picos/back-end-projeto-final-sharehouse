@@ -66,10 +66,16 @@ class UsersController {
       const user = await this.User.findOne({ email });
 
       if (!user || !bcrypt.compareSync(password, user.password)) {
-        return false;
+        return {
+          erro: [
+            { msg: 'E-mail ou senha estão incorretos!' },
+          ],
+        };
       }
 
       const token = jwt.sign({
+        id: user._id,
+        avatar: user.urlUser,
         name: user.name,
         email: user.email,
         role: user.role,

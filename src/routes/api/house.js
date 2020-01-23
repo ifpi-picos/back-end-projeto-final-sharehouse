@@ -37,26 +37,53 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/imagem', multer(imagem).single('file'), async (req, res) => {
-  // eslint-disable-next-line no-return-await
+router.post('/imagem', multer(imagem).array('file', 10), async (req, res) => {
   const uploader = async (path) => await cloudinary.uploads(path, 'file');
   const urls = [];
-  const { file } = req;
-  // eslint-disable-next-line no-restricted-syntax
-  // for (const file of files) {
-  const { path } = file;
-  // eslint-disable-next-line no-await-in-loop
-  const newPath = await uploader(path);
-  urls.push(newPath);
-  fs.unlinkSync(path);
-  // }
-  res.send(urls);
+  const erro = validationResult(req);
+
+  if (!erro.isEmpty()) {
+    res.status(422).send({ erro: erro.array() });
+  } else {
+    try {
+      // Upload de imagens
+      for(let i = 0; i <= req.files.length - 1; i++) {
+        if(req.files[i].path) {
+          urls[i] = await uploader(req.files[i].path);
+          fs.unlinkSync(req.files[i].path);
+        }
+      }
+
+      const { body } = req;
+
+      const house = await controllersHouse.create({
+        title: body.title,
+        details: body.details,
+        address: body.address,
+        price: body.price,
+        beds: body.beds,
+        baths: body.baths,
+        contact: body.contact,
+        type: body.type,
+        amenities: body.amenities,
+        urlImagem: urls
+      });
+
+      res.json({
+        msg: message.success.createHouse
+      }).status(200);
+    } catch (err) {
+      res.send(err).status(401);
+    }
+  }
 });
 
 router.get('/:id', async (req, res) => {
   const { params: { id } } = req;
+
   try {
-    const house = await controllersHouse.getById(id);
+    const house = await modelHouse.find({ _id: id });
+
     res.send(house).status(200);
   } catch (err) {
     res.send(err).status(400);
@@ -81,6 +108,41 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.send(err).status(400);
   }
+});
+
+router.post('/filter', async (req, res) => {
+  const { body } = req;
+
+  const house = await modelHouse.find({
+    $and: [
+      {
+        $or: [
+          {
+            type: body.type,
+          }
+        ],
+        $or: [
+          {
+            price: {$gte: body.price},
+          }
+        ],
+        $or: [
+          {
+            beds: {$gte: body.beds},
+          }
+        ],
+        $or: [
+          {
+            amenities: {
+              "$in": [body.amenities]
+            }
+          }
+        ]
+      }
+    ]
+  })
+  
+  res.json(house);
 });
 
 module.exports = router;

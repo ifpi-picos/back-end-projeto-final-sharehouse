@@ -4,18 +4,16 @@ class House {
   // eslint-disable-next-line class-methods-use-this
   validar() {
     return [
-      check('address.state').notEmpty().withMessage('Campo Obrigatório'),
-      check('address.city').notEmpty().withMessage('Campo Obrigatório'),
-      check('address.district').notEmpty().withMessage('Campo Obrigatório'),
-      check('address.street').notEmpty().withMessage('Campo Obrigatório'),
-      check('reference').notEmpty().withMessage('Campo Obrigatório'),
-      check('address.number').notEmpty().withMessage('Campo Obrigatório')
-        .isNumeric()
-        .withMessage('valor tem que ser numérico'),
-      check('details.beds').notEmpty().withMessage('Campo Obrigatório')
+      check('title').notEmpty().withMessage('Campo Obrigatório'),
+      check('address').notEmpty().withMessage('Campo Obrigatório'),
+      check('type').notEmpty().withMessage('Campo Obrigatório'),
+      check('beds').notEmpty().withMessage('Campo Obrigatório')
         .isNumeric()
         .withMessage('valor tem que numérico'),
-      check('preci').notEmpty().withMessage('Campo Obrigatório')
+      check('baths').notEmpty().withMessage('Campo Obrigatório')
+        .isNumeric()
+        .withMessage('valor tem que numérico'),
+      check('price').notEmpty().withMessage('Campo Obrigatório')
         .isNumeric()
         .withMessage('Campo Obrigatório'),
     ];
