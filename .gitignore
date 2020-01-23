@@ -64,5 +64,8 @@ typings/
 #Macbook files
 .DS_Store
 
-# Build 
+# Build
 dist
+
+test
+
