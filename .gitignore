@@ -67,5 +67,6 @@ typings/
 # Build
 dist
 
+# Test
 test
 
